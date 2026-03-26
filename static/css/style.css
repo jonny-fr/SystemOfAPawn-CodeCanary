@@ -308,3 +308,19 @@ html, body {
 }
 
 .empty-state svg { opacity: 0.4; }
+
+.score-neutral {
+  color: darkgreen;
+}
+
+.score-concerning {
+  color: rgb(167, 110, 0);
+}
+
+.score-warning {
+  color: #d35400;
+}
+
+.score-danger {
+  color: #c0392b;
+}

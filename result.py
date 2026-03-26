@@ -8,3 +8,9 @@ class Result:
     
     def get_formatted_date(self):
         return self.created_at.strftime('%d.%m.%Y %H:%M Uhr')
+    
+    def get_score_css_class(self):
+        if self.score < 25: return 'score-neutral'
+        if self.score < 50: return 'score-concerning'
+        if self.score < 75: return 'score-warning'
+        return 'score-danger'

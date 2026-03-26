@@ -29,7 +29,7 @@
           <div class="history-item-left">
             <span class="history-item-date">{{ row.get_formatted_date() }}</span>
           </div>
-          <span class="history-item-score"><b>{{ row.score }}</b><small>/100</small></span>
+          <span class="history-item-score"><b class="{{ row.get_score_css_class() }}">{{ row.score }}</b><small>/100</small></span>
         </a>
       </li>
       {% endfor %}
@@ -47,7 +47,5 @@
     {% endif %}
   </div>
 </div>
-
-<script src="{{ url_for('static', filename='js/history.js') }}"></script>
 </body>
 </html>
