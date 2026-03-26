@@ -1,0 +1,239 @@
+/* ── Reset & base ─────────────────────────────── */
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+:root {
+  --bg:        #0d0d0f;
+  --surface:   #1a1a1f;
+  --border:    #2a2a32;
+  --accent:    #6c63ff;
+  --accent-dk: #4f48c4;
+  --text:      #f0f0f5;
+  --muted:     #8888a0;
+  --radius-lg: 28px;
+  --radius-xl: 36px;
+}
+
+html, body {
+  height: 100%;
+  background: var(--bg);
+  color: var(--text);
+  font-family: 'Inter', system-ui, -apple-system, sans-serif;
+  -webkit-font-smoothing: antialiased;
+  overflow: hidden;        /* no scroll on homepage */
+}
+
+/* ── Full-screen layout ───────────────────────── */
+.page {
+  display: flex;
+  flex-direction: column;
+  height: 100dvh;          /* dynamic viewport height for mobile browsers */
+  padding: env(safe-area-inset-top, 0)
+           env(safe-area-inset-right, 0)
+           env(safe-area-inset-bottom, 0)
+           env(safe-area-inset-left, 0);
+}
+
+/* ── Header ───────────────────────────────────── */
+.header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 20px 20px 0;
+  flex-shrink: 0;
+}
+
+.app-title {
+  font-size: 1.25rem;
+  font-weight: 700;
+  letter-spacing: -0.02em;
+  color: var(--text);
+}
+
+.history-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 48px;
+  height: 48px;
+  border-radius: 50%;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  cursor: pointer;
+  transition: background 0.2s, transform 0.15s;
+  color: var(--muted);
+  text-decoration: none;
+}
+
+.history-btn:hover,
+.history-btn:focus-visible {
+  background: var(--border);
+  color: var(--text);
+  outline: none;
+}
+
+.history-btn:active { transform: scale(0.92); }
+
+/* ── Center soundwave ─────────────────────────── */
+.center {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.soundwave {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  height: 80px;
+}
+
+.soundwave .bar {
+  width: 6px;
+  border-radius: 3px;
+  background: var(--accent);
+  animation: wave 1.3s ease-in-out infinite;
+}
+
+/* staggered heights & delays for a natural wave look */
+.soundwave .bar:nth-child(1)  { height: 28px; animation-delay: 0.0s; }
+.soundwave .bar:nth-child(2)  { height: 48px; animation-delay: 0.1s; }
+.soundwave .bar:nth-child(3)  { height: 64px; animation-delay: 0.2s; }
+.soundwave .bar:nth-child(4)  { height: 72px; animation-delay: 0.1s; }
+.soundwave .bar:nth-child(5)  { height: 80px; animation-delay: 0.0s; }
+.soundwave .bar:nth-child(6)  { height: 72px; animation-delay: 0.1s; }
+.soundwave .bar:nth-child(7)  { height: 64px; animation-delay: 0.2s; }
+.soundwave .bar:nth-child(8)  { height: 48px; animation-delay: 0.1s; }
+.soundwave .bar:nth-child(9)  { height: 28px; animation-delay: 0.0s; }
+
+@keyframes wave {
+  0%, 100% { transform: scaleY(0.35); opacity: 0.55; }
+  50%       { transform: scaleY(1.0);  opacity: 1.0;  }
+}
+
+/* pause animation when not recording */
+.soundwave.idle .bar {
+  animation-play-state: paused;
+  transform: scaleY(0.35);
+  opacity: 0.4;
+}
+
+/* ── Bottom card ──────────────────────────────── */
+.bottom-card {
+  flex-shrink: 0;
+  margin: 0 16px 24px;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-xl);
+  padding: 24px 20px 20px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 16px;
+}
+
+/* ── Record button ────────────────────────────── */
+.record-btn {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  padding: 18px;
+  border: none;
+  border-radius: var(--radius-lg);
+  background: var(--accent);
+  color: #fff;
+  font-size: 1.1rem;
+  font-weight: 600;
+  font-family: inherit;
+  letter-spacing: 0.01em;
+  cursor: pointer;
+  transition: background 0.2s, transform 0.15s, box-shadow 0.2s;
+  box-shadow: 0 4px 24px rgba(108, 99, 255, 0.35);
+}
+
+.record-btn:hover,
+.record-btn:focus-visible { background: var(--accent-dk); outline: none; }
+.record-btn:active        { transform: scale(0.97); box-shadow: none; }
+
+.record-btn.recording {
+  background: #e53e3e;
+  box-shadow: 0 4px 24px rgba(229, 62, 62, 0.4);
+  animation: pulse 1.4s ease-in-out infinite;
+}
+
+@keyframes pulse {
+  0%, 100% { box-shadow: 0 4px 24px rgba(229, 62, 62, 0.4); }
+  50%       { box-shadow: 0 4px 32px rgba(229, 62, 62, 0.7); }
+}
+
+.record-dot {
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  background: #fff;
+  flex-shrink: 0;
+}
+
+.record-btn.recording .record-dot {
+  border-radius: 3px;  /* rounded square when recording = stop icon */
+}
+
+/* ── Upload button ────────────────────────────── */
+.upload-btn {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 12px 22px;
+  border: 1px solid var(--border);
+  border-radius: 50px;
+  background: transparent;
+  color: var(--muted);
+  font-size: 0.9rem;
+  font-weight: 500;
+  font-family: inherit;
+  cursor: pointer;
+  transition: background 0.2s, color 0.2s, transform 0.15s;
+}
+
+.upload-btn:hover,
+.upload-btn:focus-visible { background: var(--border); color: var(--text); outline: none; }
+.upload-btn:active        { transform: scale(0.96); }
+
+/* hidden file input */
+#file-input { display: none; }
+
+/* ── Icons (inline SVG) ───────────────────────── */
+.icon { width: 22px; height: 22px; fill: none; stroke: currentColor;
+        stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; }
+.icon-sm { width: 18px; height: 18px; }
+
+/* ── Toast notification ───────────────────────── */
+.toast {
+  position: fixed;
+  bottom: 100px;
+  left: 50%;
+  transform: translateX(-50%) translateY(20px);
+  background: #2a2a32;
+  color: var(--text);
+  font-size: 0.875rem;
+  font-weight: 500;
+  padding: 12px 20px;
+  border-radius: 50px;
+  white-space: nowrap;
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity 0.25s, transform 0.25s;
+  z-index: 100;
+}
+
+.toast.show {
+  opacity: 1;
+  transform: translateX(-50%) translateY(0);
+}
+
+.toast.toast-error {
+  background: #5c1a1a;
+  color: #fca5a5;
+}
