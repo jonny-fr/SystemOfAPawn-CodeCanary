@@ -284,6 +284,12 @@ html, body {
     color: var(--muted);
 }
 
+.history-item-score > small {
+  color: var(--muted);
+  font-weight: 500;
+  font-size: 1rem;
+}
+
 .history-item-score {
     font-size: 1.6rem;
     font-weight: 700;
