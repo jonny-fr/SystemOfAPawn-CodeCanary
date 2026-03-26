@@ -3,7 +3,7 @@ from flask import Flask, render_template, request, redirect, url_for
 app = Flask(__name__)
 
 
-def classify_file(file):
+def classify_file(file):  # noqa: ARG001  # file is unused in this dummy implementation
     """Dummy classifier function. Returns a hardcoded quality score."""
     score = 67
     return score
@@ -25,7 +25,7 @@ def upload():
 
 @app.route('/result')
 def result():
-    score = request.args.get('score', 0)
+    score = int(request.args.get('score', 0))
     filename = request.args.get('filename', '')
     return render_template('result.html', score=score, filename=filename)
 
