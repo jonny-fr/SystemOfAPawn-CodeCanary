@@ -9,47 +9,6 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" />
   <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}" />
-  <style>
-    .history-page { padding: 20px; }
-    .back-btn {
-      display: inline-flex; align-items: center; gap: 8px;
-      color: var(--muted); font-size: 0.95rem; font-weight: 500;
-      text-decoration: none; margin-bottom: 24px;
-      transition: color 0.2s;
-    }
-    .back-btn:hover { color: var(--text); }
-    .history-page h1 { font-size: 1.4rem; font-weight: 700; margin-bottom: 20px; }
-    .history-list {
-      list-style: none;
-      padding: 0;
-      margin: 0;
-      display: flex;
-      flex-direction: column;
-      gap: 12px;
-    }
-    .history-item {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      background: var(--surface);
-      border-radius: var(--radius-xl);
-      padding: 16px 20px;
-      text-decoration: none;
-      color: var(--text);
-      transition: opacity 0.2s;
-    }
-    .history-item:hover { opacity: 0.8; }
-    .history-item-left { display: flex; flex-direction: column; gap: 4px; }
-    .history-item-id { font-size: 0.8rem; color: var(--muted); }
-    .history-item-date { font-size: 0.85rem; color: var(--muted); }
-    .history-item-score { font-size: 1.6rem; font-weight: 700; color: var(--accent); }
-    .empty-state {
-      display: flex; flex-direction: column; align-items: center;
-      justify-content: center; gap: 12px; padding: 60px 20px;
-      color: var(--muted); text-align: center;
-    }
-    .empty-state svg { opacity: 0.4; }
-  </style>
 </head>
 <body>
 <div class="page" style="overflow-y: auto;">
@@ -68,8 +27,7 @@
       <li>
         <a href="{{ url_for('result', result_id=row.id) }}" class="history-item">
           <div class="history-item-left">
-            <span class="history-item-id">#{{ row.id }}</span>
-            <span class="history-item-date">{{ row.created_at }} UTC</span>
+            <span class="history-item-date">{{ row.get_formatted_date() }}</span>
           </div>
           <span class="history-item-score">{{ row.score }}<small style="font-size:1rem;font-weight:500;color:var(--muted);">/100</small></span>
         </a>
