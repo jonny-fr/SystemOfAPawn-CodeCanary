@@ -123,9 +123,7 @@
           mediaRecorder.onstop = () => {
             const blob = new Blob(recordedChunks, { type: 'audio/webm' });
             recordedChunks = [];
-            // TODO: send blob to backend for processing
-            console.log('Aufnahme abgeschlossen:', blob.size, 'bytes');
-            showToast('Aufnahme gespeichert (' + Math.round(blob.size / 1024) + ' KB)', false);
+            sendToBackend(blob, 'aufnahme.webm');
           };
 
           mediaRecorder.start();
@@ -160,11 +158,25 @@
     fileInput.addEventListener('change', () => {
       const file = fileInput.files[0];
       if (file) {
-        // TODO: send file to backend for processing
-        console.log('Datei ausgewählt:', file.name, file.type, file.size);
-        showToast('Datei ausgewählt: ' + file.name, false);
+        sendToBackend(file, file.name);
       }
     });
+
+    /* ── Send to backend ───────────────────── */
+    function sendToBackend(blob, filename) {
+      showToast('Wird analysiert…', false);
+      const formData = new FormData();
+      formData.append('file', blob, filename);
+      fetch('/analyze', { method: 'POST', body: formData })
+        .then(response => {
+          if (response.ok) {
+            window.location.href = response.url || '/result';
+          } else {
+            showToast('Analyse fehlgeschlagen. Bitte erneut versuchen.', true);
+          }
+        })
+        .catch(() => showToast('Verbindungsfehler. Bitte erneut versuchen.', true));
+    }
   })();
 </script>
 </body>
