@@ -47,4 +47,4 @@ def get_result(result_id):
             'SELECT id, score, created_at FROM results WHERE id = ?',
             (result_id,),
         ).fetchone()
-    return row
+    return Result(row)

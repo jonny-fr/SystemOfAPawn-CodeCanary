@@ -247,7 +247,11 @@ html, body {
 
 .back-btn:hover { color: var(--text); }
 
-.history-page h1 { font-size: 1.4rem; font-weight: 700; margin-bottom: 20px; }
+.history-page h1 {
+  font-size: 1.4rem;
+  font-weight: 700;
+  margin-bottom: 20px;
+}
 
 .history-list {
     list-style: none;
@@ -323,4 +327,100 @@ html, body {
 
 .score-danger {
   color: #c0392b;
+}
+
+.result-page { padding: 20px; }
+
+.back-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  color: var(--muted);
+  font-size: 0.95rem;
+  font-weight: 500;
+  text-decoration: none;
+  margin-bottom: 24px;
+  transition: color 0.2s;
+}
+
+.back-btn:hover { color: var(--text); }
+
+.result-page h1 {
+  font-size: 1.25rem;
+  font-weight: 700;
+  margin-bottom: 32px;
+}
+
+.score-card {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 16px;
+  background: var(--surface);
+  border-radius: var(--radius-xl);
+  padding: 40px 24px;
+  text-align: center;
+}
+
+.score-label {
+  font-size: 1rem;
+  font-weight: 500;
+  color: var(--muted);
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+}
+
+.score-value {
+  font-size: 5rem;
+  font-weight: 700;
+  line-height: 1;
+}
+
+.score-unit {
+  font-size: 1rem;
+  color: var(--muted);
+  font-weight: 500;
+}
+
+.score-meta {
+  font-size: 0.85rem;
+  color: var(--muted);
+  margin-top: 8px;
+}
+
+.details-expander svg {
+  margin-right: 5px;
+  margin-top: 0.25rem;
+}
+
+.details-expander {
+  width: 80%;
+}
+
+.details-expander > div {
+  display: flex;
+}
+
+.details-expander > div > table {
+  margin-top: 0.5rem;
+  margin-right: auto;
+  margin-left: auto;
+  display: block;
+  width: 75%;
+}
+
+.flip {
+  -webkit-transform: scale(-1, -1);
+  -moz-transform: scale(-1, -1);
+  -o-transform: scale(-1, -1);
+  transform: scale(-1, -1);
+}
+
+.details-label {
+  margin-right: 20px;
+  font-weight: 600;
+}
+
+.details-value {
+  font-weight: 600;
 }
