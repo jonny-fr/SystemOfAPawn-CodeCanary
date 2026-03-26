@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="theme-color" content="#0d0d0f" />
+  <title>Code Canery</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}" />
+</head>
+<body>
+<div class="page">
+
+  <!-- ── Header ─────────────────────────────── -->
+  <header class="header">
+    <span class="app-title">Code Canery</span>
+    <a href="/history" class="history-btn" aria-label="Verlauf anzeigen" title="Verlauf">
+      <!-- history / clock icon -->
+      <svg class="icon" viewBox="0 0 24 24" aria-hidden="true">
+        <circle cx="12" cy="12" r="9"/>
+        <polyline points="12 7 12 12 15 15"/>
+        <path d="M3.05 11a9 9 0 1 1 .5 4"/>
+        <polyline points="3 8 3 11 6 11"/>
+      </svg>
+    </a>
+  </header>
+
+  <!-- ── Centre: animated soundwave ──────────── -->
+  <main class="center" aria-label="Soundwave-Visualisierung">
+    <div class="soundwave idle" id="soundwave" aria-hidden="true">
+      <div class="bar"></div>
+      <div class="bar"></div>
+      <div class="bar"></div>
+      <div class="bar"></div>
+      <div class="bar"></div>
+      <div class="bar"></div>
+      <div class="bar"></div>
+      <div class="bar"></div>
+      <div class="bar"></div>
+    </div>
+  </main>
+
+  <!-- ── Bottom action card ───────────────────── -->
+  <section class="bottom-card" aria-label="Aktionen">
+
+    <!-- Record / Stop button -->
+    <button
+      class="record-btn"
+      id="record-btn"
+      aria-label="Aufnahme starten"
+      type="button"
+    >
+      <span class="record-dot" aria-hidden="true"></span>
+      <span id="record-label">Aufnehmen</span>
+    </button>
+
+    <!-- Upload button -->
+    <button
+      class="upload-btn"
+      id="upload-btn"
+      aria-label="Audiodatei hochladen"
+      type="button"
+    >
+      <!-- upload / arrow-up-from-tray icon -->
+      <svg class="icon icon-sm" viewBox="0 0 24 24" aria-hidden="true">
+        <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/>
+        <polyline points="17 8 12 3 7 8"/>
+        <line x1="12" y1="3" x2="12" y2="15"/>
+      </svg>
+      Hochladen
+    </button>
+
+    <!-- Hidden file input -->
+    <input type="file" id="file-input" accept="audio/*,video/*" tabindex="-1" />
+  </section>
+
+  <!-- Toast notification -->
+  <div id="toast" class="toast" role="alert" aria-live="polite" aria-atomic="true"></div>
+
+</div>
+
+<script>
+  (function () {
+    const recordBtn   = document.getElementById('record-btn');
+    const recordLabel = document.getElementById('record-label');
+    const soundwave   = document.getElementById('soundwave');
+    const uploadBtn   = document.getElementById('upload-btn');
+    const fileInput   = document.getElementById('file-input');
+    const toast       = document.getElementById('toast');
+
+    let mediaRecorder = null;
+    let recordedChunks = [];
+    let recording     = false;
+    let toastTimer    = null;
+
+    /* ── Toast helper ──────────────────────── */
+    function showToast(msg, isError) {
+      toast.textContent = msg;
+      toast.className = 'toast show' + (isError ? ' toast-error' : '');
+      clearTimeout(toastTimer);
+      toastTimer = setTimeout(() => { toast.className = 'toast'; }, 3500);
+    }
+
+    /* ── Recording ─────────────────────────── */
+    recordBtn.addEventListener('click', async () => {
+      if (!navigator.mediaDevices || !navigator.mediaDevices.getUserMedia) {
+        showToast('Mikrofonzugriff wird von diesem Browser nicht unterstützt.', true);
+        return;
+      }
+      if (typeof MediaRecorder === 'undefined') {
+        showToast('Aufnahme wird von diesem Browser nicht unterstützt.', true);
+        return;
+      }
+
+      if (!recording) {
+        try {
+          const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
+          recordedChunks = [];
+          mediaRecorder = new MediaRecorder(stream);
+
+          mediaRecorder.ondataavailable = (e) => {
+            if (e.data && e.data.size > 0) {
+              recordedChunks.push(e.data);
+            }
+          };
+
+          mediaRecorder.onstop = () => {
+            const blob = new Blob(recordedChunks, { type: 'audio/webm' });
+            recordedChunks = [];
+            // TODO: send blob to backend for processing
+            console.log('Aufnahme abgeschlossen:', blob.size, 'bytes');
+            showToast('Aufnahme gespeichert (' + Math.round(blob.size / 1024) + ' KB)', false);
+          };
+
+          mediaRecorder.start();
+
+          recording = true;
+          recordBtn.classList.add('recording');
+          recordBtn.setAttribute('aria-label', 'Aufnahme stoppen');
+          recordLabel.textContent = 'Stopp';
+          soundwave.classList.remove('idle');
+        } catch (err) {
+          console.error('Mikrofonzugriff verweigert:', err);
+          showToast('Mikrofonzugriff nicht möglich. Bitte Einstellungen prüfen.', true);
+        }
+      } else {
+        if (mediaRecorder) {
+          mediaRecorder.stop();
+          mediaRecorder.stream.getTracks().forEach(t => t.stop());
+          mediaRecorder = null;
+        }
+
+        recording = false;
+        recordBtn.classList.remove('recording');
+        recordBtn.setAttribute('aria-label', 'Aufnahme starten');
+        recordLabel.textContent = 'Aufnehmen';
+        soundwave.classList.add('idle');
+      }
+    });
+
+    /* ── Upload ────────────────────────────── */
+    uploadBtn.addEventListener('click', () => fileInput.click());
+
+    fileInput.addEventListener('change', () => {
+      const file = fileInput.files[0];
+      if (file) {
+        // TODO: send file to backend for processing
+        console.log('Datei ausgewählt:', file.name, file.type, file.size);
+        showToast('Datei ausgewählt: ' + file.name, false);
+      }
+    });
+  })();
+</script>
+</body>
+</html>
