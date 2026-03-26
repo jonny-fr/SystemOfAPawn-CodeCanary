@@ -84,7 +84,7 @@ html, body {
   display: flex;
   align-items: center;
   gap: 6px;
-  height: 80px;
+  height: 45px;
 }
 
 .soundwave .bar {
@@ -95,19 +95,19 @@ html, body {
 }
 
 /* staggered heights & delays for a natural wave look */
-.soundwave .bar:nth-child(1)  { height: 28px; animation-delay: 0.0s; }
+.soundwave .bar:nth-child(1)  { height: 16px; animation-delay: 0.0s; }
 .soundwave .bar:nth-child(2)  { height: 48px; animation-delay: 0.1s; }
-.soundwave .bar:nth-child(3)  { height: 64px; animation-delay: 0.2s; }
-.soundwave .bar:nth-child(4)  { height: 72px; animation-delay: 0.1s; }
-.soundwave .bar:nth-child(5)  { height: 80px; animation-delay: 0.0s; }
-.soundwave .bar:nth-child(6)  { height: 72px; animation-delay: 0.1s; }
-.soundwave .bar:nth-child(7)  { height: 64px; animation-delay: 0.2s; }
-.soundwave .bar:nth-child(8)  { height: 48px; animation-delay: 0.1s; }
-.soundwave .bar:nth-child(9)  { height: 28px; animation-delay: 0.0s; }
+.soundwave .bar:nth-child(3)  { height: 112px; animation-delay: 0.2s; }
+.soundwave .bar:nth-child(4)  { height: 32px; animation-delay: 0.1s; }
+.soundwave .bar:nth-child(5)  { height: 160px; animation-delay: 0.1s; }
+.soundwave .bar:nth-child(6)  { height: 144px; animation-delay: 0.0s; }
+.soundwave .bar:nth-child(7)  { height: 80px; animation-delay: 0.2s; }
+.soundwave .bar:nth-child(8)  { height: 32px; animation-delay: 0.1s; }
+.soundwave .bar:nth-child(9)  { height: 48px; animation-delay: 0.0s; }
 
 @keyframes wave {
-  0%, 100% { transform: scaleY(0.35); opacity: 0.55; }
-  50%       { transform: scaleY(1.0);  opacity: 1.0;  }
+  0%, 100% { transform: scaleY(0.25); opacity: 0.55; }
+  50%       { transform: scaleY(0.75); opacity: 1.0;  }
 }
 
 /* pause animation when not recording */
