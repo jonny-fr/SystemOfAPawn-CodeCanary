@@ -4,12 +4,10 @@ import sqlite3
 
 DATABASE = 'results.db'
 
-
 def get_db():
     conn = sqlite3.connect(DATABASE)
     conn.row_factory = sqlite3.Row
     return conn
-
 
 def init_db():
     with get_db() as conn:
@@ -17,19 +15,31 @@ def init_db():
             '''CREATE TABLE IF NOT EXISTS results (
                 id         INTEGER PRIMARY KEY AUTOINCREMENT,
                 score      INTEGER NOT NULL,
-                created_at TEXT    NOT NULL
+                created_at TEXT    NOT NULL,
+                speech_rate     DECIMAL(10,5) NOT NULL,
+                pause_rate      DECIMAL(10,5) NOT NULL,
+                mean_pause_duration     DECIMAL(10,5) NOT NULL,
+                f0_mean         DECIMAL(10,5) NOT NULL,
+                f0_range        DECIMAL(10,5) NOT NULL,
+                rms_energy      DECIMAL(10,5) NOT NULL,
+                jitter          DECIMAL(10,5) NOT NULL,
+                shimmer         DECIMAL(10,5) NOT NULL,
+                hnr             DECIMAL(10,5) NOT NULL,
+                f1_mean         DECIMAL(10,5) NOT NULL,
+                f2_mean         DECIMAL(10,5) NOT NULL,
+                mfcc_var        DECIMAL(10,5) NOT NULL
             )'''
         )
         conn.commit()
 
 
-def save_result(score):
+def save_result(res: Result):
     """Persist a classifier score and return the new row id."""
-    created_at = datetime.now(timezone.utc).strftime('%Y-%m-%d %H:%M:%S')
     with get_db() as conn:
+        sql = 'INSERT INTO results (score, created_at, speech_rate, pause_rate, mean_pause_duration, f0_mean, f0_range, rms_energy, jitter, shimmer, hnr, f1_mean, f2_mean, mfcc_var) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)'
         cursor = conn.execute(
-            'INSERT INTO results (score, created_at) VALUES (?, ?)',
-            (score, created_at),
+            sql,
+            (res.score, res.created_at, res.speech_rate, res.pause_rate, res.mean_pause_duration, res.f0_mean, res.f0_range, res.rms_energy, res.jitter, res.shimmer, res.hnr, res.f1_mean, res.f2_mean, res.mfcc_var)
         )
         conn.commit()
         return cursor.lastrowid
@@ -37,14 +47,14 @@ def save_result(score):
 def get_results():
     with get_db() as conn:
         rows = conn.execute(
-            'SELECT id, score, created_at FROM results ORDER BY id DESC'
+            'SELECT * FROM results ORDER BY id DESC'
         ).fetchall()
     return [Result(r) for r in rows]
 
 def get_result(result_id):
     with get_db() as conn:
         row = conn.execute(
-            'SELECT id, score, created_at FROM results WHERE id = ?',
+            'SELECT * FROM results WHERE id = ?',
             (result_id,),
         ).fetchone()
     return Result(row)

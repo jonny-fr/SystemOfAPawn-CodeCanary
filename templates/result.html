@@ -31,27 +31,56 @@
           Details
         </div>
         <div id="details-content" style="visibility: hidden;display: none;">
+          <b>Veränderungen zum Vergleichszeitraum</b>
           <table>
             <tbody>
               <tr>
-                <td class="details-label">Merkmal 1:</td>
-                <td class="details-value">0/10</td>
+                <td class="details-label">Sprechtempo:</td>
+                <td class="details-value">{{ result.speech_rate }}</td>
               </tr>
               <tr>
-                <td class="details-label">Merkmal 2:</td>
-                <td class="details-value">0/10</td>
+                <td class="details-label">Pausenanzahl:</td>
+                <td class="details-value">{{ result.pause_rate }}</td>
               </tr>
               <tr>
-                <td class="details-label">Merkmal 3:</td>
-                <td class="details-value">0/10</td>
+                <td class="details-label">Pausendauer:</td>
+                <td class="details-value">{{ result.mean_pause_duration }}</td>
               </tr>
               <tr>
-                <td class="details-label">Merkmal 4:</td>
-                <td class="details-value">0/10</td>
+                <td class="details-label">Sprachenergie:</td>
+                <td class="details-value">{{ result.rms_energy }}</td>
               </tr>
               <tr>
-                <td class="details-label">Merkmal 5:</td>
-                <td class="details-value">0/10</td>
+                <td class="details-label">Jitter:</td>
+                <td class="details-value">{{ result.jitter }}</td>
+              </tr>
+              <tr>
+                <td class="details-label">Shimmer:</td>
+                <td class="details-value">{{ result.shimmer }}</td>
+              </tr>
+              <tr>
+                <td class="details-label">Niederfrequenzvarianz:</td>
+                <td class="details-value">{{ result.f0_range}}</td>
+              </tr>
+              <tr>
+                <td class="details-label">Niederfrequenzen:</td>
+                <td class="details-value">{{ result.f0_mean }}</td>
+              </tr>
+              <tr>
+                <td class="details-label">Mittelfrequenzen:</td>
+                <td class="details-value">{{ result.f1_mean }}</td>
+              </tr>
+              <tr>
+                <td class="details-label">Hochfrequenzen:</td>
+                <td class="details-value">{{ result.f2_mean }}</td>
+              </tr>
+              <tr>
+                <td class="details-label">Frequenzkoeffizienten:</td>
+                <td class="details-value">{{ result.mfcc_var }}</td>
+              </tr>
+              <tr>
+                <td class="details-label">Harmonics to Noise Ratio:</td>
+                <td class="details-value">{{ result.hnr}}</td>
               </tr>
             </tbody>
           </table>

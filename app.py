@@ -1,5 +1,6 @@
 from flask import Flask, render_template, request, redirect, url_for, abort
 from database import get_result, get_results, init_db, save_result
+from result import Result
 
 app = Flask(__name__)
 
@@ -7,8 +8,22 @@ app = Flask(__name__)
 
 def analyze_audio(_file):
     """Dummy classifier – always returns a fixed score for demonstration."""
-    score = 67
-    result_id = save_result(score)
+    res = Result(None)
+    res.score = 67
+    res.f0_mean = 1
+    res.f0_range = 1
+    res.f1_mean = 1
+    res.f2_mean = 1
+    res.hnr = 1
+    res.jitter = 1
+    res.mean_pause_duration = 1
+    res.mfcc_var = 1
+    res.shimmer = 1
+    res.speech_rate = 1
+    res.pause_rate = 1
+    res.mean_pause_duration = 1
+    res.rms_energy = 1
+    result_id = save_result(res)
     return result_id
 
 init_db()

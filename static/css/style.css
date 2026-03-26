@@ -406,7 +406,7 @@ html, body {
   margin-right: auto;
   margin-left: auto;
   display: block;
-  width: 75%;
+  width: 100%;
 }
 
 .flip {
@@ -417,7 +417,8 @@ html, body {
 }
 
 .details-label {
-  margin-right: 20px;
+  padding-right: 10px;
+  text-align: right;
   font-weight: 600;
 }
 
