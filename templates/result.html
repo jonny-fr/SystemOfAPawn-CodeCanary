@@ -4,7 +4,7 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <meta name="theme-color" content="#0d0d0f" />
-  <title>Ergebnis – Code Canery</title>
+  <title>Ergebnis #{{ result.id }} – Code Canery</title>
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" />
@@ -47,6 +47,11 @@
       color: var(--muted);
       font-weight: 500;
     }
+    .score-meta {
+      font-size: 0.85rem;
+      color: var(--muted);
+      margin-top: 8px;
+    }
   </style>
 </head>
 <body>
@@ -59,11 +64,12 @@
       </svg>
       Zurück
     </a>
-    <h1>Ergebnis</h1>
+    <h1>Ergebnis #{{ result.id }}</h1>
     <div class="score-card">
       <span class="score-label">Dein Score</span>
-      <span class="score-value">{{ score }}</span>
+      <span class="score-value">{{ result.score }}</span>
       <span class="score-unit">von 100 Punkten</span>
+      <span class="score-meta">{{ result.created_at }} UTC</span>
     </div>
   </div>
 </div>
