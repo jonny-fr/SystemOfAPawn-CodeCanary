@@ -2,13 +2,13 @@
 *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
 :root {
-  --bg:        #0d0d0f;
-  --surface:   #1a1a1f;
+  --bg:        #f0f0f5;
+  --surface:   #bdc3c7;
   --border:    #2a2a32;
   --accent:    #6c63ff;
   --accent-dk: #4f48c4;
-  --text:      #f0f0f5;
-  --muted:     #8888a0;
+  --text:      #0d0d0f;
+  --muted:     #1a1a1f;
   --radius-lg: 28px;
   --radius-xl: 36px;
 }
@@ -57,7 +57,6 @@ html, body {
   height: 48px;
   border-radius: 50%;
   background: var(--surface);
-  border: 1px solid var(--border);
   cursor: pointer;
   transition: background 0.2s, transform 0.15s;
   color: var(--muted);
@@ -91,7 +90,7 @@ html, body {
 .soundwave .bar {
   width: 6px;
   border-radius: 3px;
-  background: var(--accent);
+  background: var(--accent-dk);
   animation: wave 1.3s ease-in-out infinite;
 }
 
@@ -123,7 +122,6 @@ html, body {
   flex-shrink: 0;
   margin: 0 16px 24px;
   background: var(--surface);
-  border: 1px solid var(--border);
   border-radius: var(--radius-xl);
   padding: 24px 20px 20px;
   display: flex;
