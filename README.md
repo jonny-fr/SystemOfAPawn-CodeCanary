@@ -1,4 +1,4 @@
-# 🐦 CodeCanary – Stimmungsmonitoring durch Sprachanalyse
+#  CodeCanary – Stimmungsmonitoring durch Sprachanalyse
 
 CodeCanary ist ein KI-gestütztes System zur täglichen Stimmungsüberwachung. Patienten laden täglich eine kurze Sprachaufnahme hoch; das System extrahiert daraus akustische Merkmale und erkennt auf Basis statistischer Zeitreihenanalyse (CUSUM) Anzeichen von Depressionen oder Manien – vollautomatisch, ohne manuelle Eingaben.
 
@@ -24,13 +24,12 @@ CodeCanary ist ein KI-gestütztes System zur täglichen Stimmungsüberwachung. P
 
 ## Features
 
-- 🎤 **Browserbasierte Aufnahme** – Sprachaufnahme direkt im Browser oder Upload einer Audiodatei
-- 📊 **15 akustische Merkmale** – Grundfrequenz, Jitter, Shimmer, HNR, Sprechrate, Pausen, Energie, Spektralmerkmale und MFCCs
-- 📅 **Persönliche Baseline** – Die ersten drei Aufnahmetage dienen als individuelle Referenz
-- 🔍 **CUSUM-Erkennung** – Sensitive Erkennung von Zustandsveränderungen über Zeit (Depressions- und Maniesignale)
-- 📈 **Verlaufsansicht** – Historische Scores und Klassifikationen auf einen Blick
-- ⚡ **Echtzeit-Fortschritt** – Live-Fortschrittsanzeige während der Analyse via Server-Sent Events
-- 🇩🇪 **Deutsche Oberfläche** – Komplett deutschsprachige Benutzeroberfläche
+- **Browserbasierte Aufnahme** – Sprachaufnahme direkt im Browser oder Upload einer Audiodatei
+- **15 akustische Merkmale** – Grundfrequenz, Jitter, Shimmer, HNR, Sprechrate, Pausen, Energie, Spektralmerkmale und MFCCs
+- **Persönliche Baseline** – Die ersten drei Aufnahmetage dienen als individuelle Referenz
+- **CUSUM-Erkennung** – Sensitive Erkennung von Zustandsveränderungen über Zeit (Depressions- und Maniesignale)
+- **Verlaufsansicht** – Historische Scores und Klassifikationen auf einen Blick
+- **Echtzeit-Fortschritt** – Live-Fortschrittsanzeige während der Analyse via Server-Sent Events
 
 ---
 
@@ -86,15 +85,12 @@ Sprachaufnahme (Browser / Datei-Upload)
 ## Installation
 
 ```bash
-# 1. Repository klonen
-git clone https://github.com/jonny-fr/SystemOfAPawn-CodeCanary.git
-cd SystemOfAPawn-CodeCanary
 
-# 2. Virtuelle Umgebung erstellen (empfohlen)
+# 1. Virtuelle Umgebung erstellen (empfohlen)
 python -m venv .venv
 source .venv/bin/activate   # Windows: .venv\Scripts\activate
 
-# 3. Abhängigkeiten installieren
+# 2. Abhängigkeiten installieren
 pip install -r requirements.txt
 ```
 
@@ -199,7 +195,7 @@ SystemOfAPawn-CodeCanary/
 ├── result.py                       # Ergebnis-Datenmodell
 ├── requirements.txt                # Python-Abhängigkeiten
 ├── classifier/
-│   ├── pipeline.py                 # Kern-ML-Pipeline (8 Module)
+│   ├── pipeline.py                 # Kern-Pipeline (8 Module)
 │   ├── analyzer.py                 # Einzel-Tag-Wrapper (inkrementell)
 │   ├── scoring.py                  # Mood-Score-Berechnung
 │   └── Hackathon_Dataset_Final/    # Beispieldatensatz (Patienten A–E)
@@ -228,4 +224,4 @@ SystemOfAPawn-CodeCanary/
 
 ---
 
-> **Hinweis:** Dieses System ist ein Forschungsprototyp und **kein zertifiziertes Medizinprodukt**. Es ersetzt keine ärztliche oder therapeutische Beurteilung.
+> **Disclaimer:** Dieses System ist ein Forschungsprototyp und **kein zertifiziertes Medizinprodukt**. Es ersetzt unter keinen Umständen ärztliche oder therapeutische Beurteilung.
