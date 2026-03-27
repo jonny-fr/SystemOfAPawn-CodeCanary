@@ -22,6 +22,14 @@ html, body {
   overflow: hidden;        /* no scroll on homepage */
 }
 
+/* scrollable variants for history / result pages */
+.history-page-scroll,
+.result-page-scroll {
+  overflow-y: auto;
+  height: auto;
+  min-height: 100dvh;
+}
+
 /* ── Full-screen layout ───────────────────────── */
 .page {
   display: flex;
@@ -313,21 +321,15 @@ html, body {
 
 .empty-state svg { opacity: 0.4; }
 
-.score-neutral {
-  color: darkgreen;
-}
-
-.score-concerning {
-  color: rgb(167, 110, 0);
-}
-
-.score-warning {
-  color: #d35400;
-}
-
-.score-danger {
-  color: #c0392b;
-}
+/* ── Score classes (-100 .. +100) ─────────────── */
+.score-baseline     { color: var(--muted); }
+.score-neutral      { color: #1a7a1a; }
+.score-concerning-dep { color: rgb(167, 110, 0); }
+.score-warning-dep  { color: #d35400; }
+.score-danger-dep   { color: #c0392b; }
+.score-concerning-man { color: rgb(167, 110, 0); }
+.score-warning-man  { color: #d35400; }
+.score-danger-man   { color: #8e44ad; }
 
 .result-page { padding: 20px; }
 
@@ -424,4 +426,174 @@ html, body {
 
 .details-value {
   font-weight: 600;
+}
+
+/* ── JS visibility toggles ────────────────────── */
+.progress-overlay--hidden { display: none !important; }
+.soundwave--hidden        { display: none !important; }
+.day-info-card--hidden    { display: none !important; }
+.details-content--hidden  { display: none !important; }
+.btn--disabled            { opacity: 0.45; pointer-events: none; }
+
+/* ── Progress overlay ─────────────────────────── */
+.progress-overlay {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 18px;
+  padding: 24px 20px;
+  width: 100%;
+}
+
+.progress-bar-wrap {
+  width: 80%;
+  max-width: 320px;
+  height: 8px;
+  background: var(--surface);
+  border-radius: 50px;
+  overflow: hidden;
+}
+
+.progress-bar-fill {
+  height: 100%;
+  width: 0%;
+  background: var(--accent);
+  border-radius: 50px;
+  transition: width 0.35s ease;
+}
+
+.progress-status {
+  font-size: 0.88rem;
+  color: var(--muted);
+  font-weight: 500;
+  text-align: center;
+}
+
+/* ── Day info card ────────────────────────────── */
+.day-info-card {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 6px;
+  padding: 8px 20px 4px;
+}
+
+.day-number-label {
+  font-size: 2.4rem;
+  font-weight: 700;
+  line-height: 1;
+  color: var(--text);
+}
+
+.baseline-hint {
+  font-size: 0.88rem;
+  color: var(--muted);
+  font-weight: 500;
+  text-align: center;
+}
+
+.baseline-sub {
+  font-size: 0.78rem;
+  color: var(--muted);
+  text-align: center;
+}
+
+.last-score-mini {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 2px;
+  margin-top: 4px;
+}
+
+.last-score-label {
+  font-size: 0.72rem;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--muted);
+}
+
+.last-score-value {
+  font-size: 2.4rem;
+  font-weight: 700;
+  line-height: 1;
+}
+
+.last-score-state {
+  font-size: 0.8rem;
+  color: var(--muted);
+}
+
+/* ── Baseline badge ───────────────────────────── */
+.baseline-badge {
+  font-size: 0.7rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--accent);
+  background: rgba(108, 99, 255, 0.12);
+  padding: 2px 8px;
+  border-radius: 50px;
+}
+
+/* ── Quality badge ────────────────────────────── */
+.quality-badge {
+  font-size: 0.75rem;
+  padding: 4px 14px;
+  border-radius: 50px;
+  font-weight: 500;
+}
+
+.quality-clean    { background: rgba(26, 122, 26, 0.12); color: #1a7a1a; }
+.quality-degraded { background: rgba(167, 110, 0, 0.12); color: rgb(167, 110, 0); }
+.quality-reject   { background: rgba(192, 57, 43, 0.12); color: #c0392b; }
+
+/* ── Result page: extra score info ───────────── */
+.score-state-label {
+  font-size: 1rem;
+  font-weight: 600;
+  color: var(--text);
+}
+
+.score-confidence {
+  font-size: 0.8rem;
+  color: var(--muted);
+}
+
+/* ── Baseline message on result page ─────────── */
+.baseline-message {
+  font-size: 0.9rem;
+  color: var(--muted);
+  text-align: center;
+  line-height: 1.6;
+  max-width: 280px;
+}
+
+.baseline-message p + p { margin-top: 6px; }
+
+/* ── Details toggle ───────────────────────────── */
+.details-toggle {
+  display: flex;
+  cursor: pointer;
+  -webkit-user-select: none;
+  user-select: none;
+}
+
+.details-toggle:focus-visible {
+  outline: 2px solid var(--accent);
+  border-radius: 4px;
+}
+
+/* ── History: day column ──────────────────────── */
+.history-item-day {
+  font-size: 1.1rem;
+  font-weight: 700;
+  color: var(--text);
+}
+
+.history-item-score--baseline {
+  font-size: 1.6rem;
+  font-weight: 700;
+  color: var(--muted);
 }

@@ -17,7 +17,6 @@
   <header class="header">
     <span class="app-title">Code Canery</span>
     <a href="/history" class="history-btn" aria-label="Verlauf anzeigen" title="Verlauf">
-      <!-- history / clock icon -->
       <svg class="icon" viewBox="0 0 24 24" aria-hidden="true">
         <circle cx="12" cy="12" r="9"/>
         <polyline points="12 7 12 12 15 15"/>
@@ -26,8 +25,30 @@
     </a>
   </header>
 
-  <!-- ── Centre: animated soundwave ──────────── -->
-  <main class="center" aria-label="Soundwave-Visualisierung">
+  <!-- ── Centre: day info + soundwave / progress ── -->
+  <main class="center" aria-label="Hauptbereich">
+
+    <!-- Day info card (hidden during analysis) -->
+    <div class="day-info-card" id="day-info-card">
+      <span class="day-number-label">Tag {{ day_number }}</span>
+
+      {% if day_number <= 3 %}
+        <span class="baseline-hint">Baseline-Phase ({{ day_number }}/3)</span>
+        <span class="baseline-sub">Noch {{ 4 - day_number }} Tag{{ '' if (4 - day_number) == 1 else 'e' }} bis zur ersten Analyse</span>
+      {% elif last_result and last_result.score is not none %}
+        <div class="last-score-mini">
+          <span class="last-score-label">Letzter Score (Tag {{ last_result.day_number }})</span>
+          <span class="last-score-value {{ last_result.get_score_css_class() }}">
+            {{ last_result.score | int }}
+          </span>
+          <span class="last-score-state">{{ last_result.get_state_label() }}</span>
+        </div>
+      {% else %}
+        <span class="baseline-hint">Lade eine Aufnahme für Tag {{ day_number }} hoch</span>
+      {% endif %}
+    </div>
+
+    <!-- Soundwave (hidden during analysis) -->
     <div class="soundwave idle" id="soundwave" aria-hidden="true">
       <div class="bar"></div>
       <div class="bar"></div>
@@ -39,12 +60,20 @@
       <div class="bar"></div>
       <div class="bar"></div>
     </div>
+
+    <!-- Progress overlay (shown during analysis) -->
+    <div id="progress-overlay" class="progress-overlay progress-overlay--hidden" aria-live="polite" aria-label="Analyse läuft">
+      <div class="progress-bar-wrap">
+        <div class="progress-bar-fill" id="progress-bar-fill"></div>
+      </div>
+      <span class="progress-status" id="progress-status">Wird vorbereitet…</span>
+    </div>
+
   </main>
 
   <!-- ── Bottom action card ───────────────────── -->
   <section class="bottom-card" aria-label="Aktionen">
 
-    <!-- Record / Stop button -->
     <button
       class="record-btn"
       id="record-btn"
@@ -55,9 +84,7 @@
       <span id="record-label">Aufnehmen</span>
     </button>
 
-    <!-- Upload button -->
     <button class="upload-btn" id="upload-btn" aria-label="Audiodatei hochladen" type="button">
-      <!-- upload / arrow-up-from-tray icon -->
       <svg class="icon icon-sm" viewBox="0 0 24 24" aria-hidden="true">
         <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/>
         <polyline points="17 8 12 3 7 8"/>
@@ -66,7 +93,6 @@
       Hochladen
     </button>
 
-    <!-- Hidden file input -->
     <input type="file" id="file-input" accept="audio/*,video/*" tabindex="-1" />
   </section>
 

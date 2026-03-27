@@ -1,13 +1,10 @@
 function toggleDetails() {
-    let details = document.getElementById('details-content');
-    let toggle = document.getElementById('details-flip')
-    if(details.style.display == 'none' || details.style.display == '') {
-      details.style.visibility = 'visible'
-      details.style.display = 'block';
-      toggle.classList.remove('flip');
-    } else {
-      details.style.visibility = 'hidden'
-      details.style.display = 'none';
-      toggle.classList.add('flip');
-    }
-  }
+    var details = document.getElementById('details-content');
+    var toggle  = document.getElementById('details-flip');
+    var btn     = details.previousElementSibling;
+
+    var isHidden = details.classList.contains('details-content--hidden');
+    details.classList.toggle('details-content--hidden', !isHidden);
+    toggle.classList.toggle('flip', !isHidden);
+    if (btn) btn.setAttribute('aria-expanded', String(isHidden));
+}

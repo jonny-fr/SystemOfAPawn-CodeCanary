@@ -11,8 +11,9 @@
   <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}" />
 </head>
 <body>
-<div class="page" style="overflow-y: auto;">
+<div class="page history-page-scroll">
   <div class="history-page">
+
     <a href="/" class="back-btn" aria-label="Zurück zur Startseite">
       <svg class="icon icon-sm" viewBox="0 0 24 24" fill="none" stroke="currentColor"
            stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
@@ -20,20 +21,35 @@
       </svg>
       Zurück
     </a>
+
     <h1>Verlauf</h1>
+
     {% if results %}
     <ul class="history-list">
       {% for row in results %}
       <li>
         <a href="{{ url_for('result', result_id=row.id) }}" class="history-item">
           <div class="history-item-left">
+            <span class="history-item-day">Tag {{ row.day_number }}</span>
             <span class="history-item-date">{{ row.get_formatted_date() }}</span>
+            {% if row.is_baseline %}
+            <span class="baseline-badge">Baseline</span>
+            {% endif %}
           </div>
-          <span class="history-item-score"><b class="{{ row.get_score_css_class() }}">{{ row.score }}</b><small>/100</small></span>
+
+          {% if row.is_baseline or row.score is none %}
+          <span class="history-item-score history-item-score--baseline">–</span>
+          {% else %}
+          <span class="history-item-score">
+            <b class="{{ row.get_score_css_class() }}">{{ row.score | int }}</b>
+            <small>/ ±100</small>
+          </span>
+          {% endif %}
         </a>
       </li>
       {% endfor %}
     </ul>
+
     {% else %}
     <div class="empty-state">
       <svg class="icon" width="48" height="48" viewBox="0 0 24 24" fill="none"
@@ -45,6 +61,7 @@
       <p>Noch keine Aufnahmen vorhanden.</p>
     </div>
     {% endif %}
+
   </div>
 </div>
 </body>

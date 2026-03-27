@@ -4,15 +4,16 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <meta name="theme-color" content="#0d0d0f" />
-  <title>Ergebnis #{{ result.get_formatted_date() }} – Code Canery</title>
+  <title>Tag {{ result.day_number }} – Code Canery</title>
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" />
   <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}" />
 </head>
 <body>
-<div class="page" style="overflow-y: auto;">
+<div class="page result-page-scroll">
   <div class="result-page">
+
     <a href="/" class="back-btn" aria-label="Zurück zur Startseite">
       <svg class="icon icon-sm" viewBox="0 0 24 24" fill="none" stroke="currentColor"
            stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
@@ -20,75 +21,126 @@
       </svg>
       Zurück
     </a>
-    <h1>Auswertung {{ result.get_formatted_date() }}</h1>
+
+    <h1>Tag {{ result.day_number }} &ndash; {{ result.get_formatted_date() }}</h1>
+
     <div class="score-card">
-      <span class="score-label">Dein Score</span>
-      <span class="score-value {{ result.get_score_css_class() }}">{{ result.score }}</span>
-      <span class="score-unit">von 100 Punkten</span>
+
+      {% if result.is_baseline %}
+        <!-- ── Baseline day (1-3): no score ── -->
+        <span class="score-label">Baseline-Tag {{ result.day_number }} / 3</span>
+        <div class="baseline-message">
+          <p>Deine Stimme wird kalibriert.</p>
+          <p>Ab Tag 4 erhältst du deinen persönlichen Stimmungs-Score.</p>
+        </div>
+        {% if result.quality %}
+        <span class="quality-badge quality-{{ result.quality }}">
+          Audioqualität: {{ result.get_quality_label() }}
+        </span>
+        {% endif %}
+
+      {% elif result.score is none %}
+        <!-- ── Abstain: no usable score ── -->
+        <span class="score-label">Keine Bewertung</span>
+        <div class="baseline-message">
+          <p>Die Analyse konnte keinen Score ermitteln.</p>
+          {% if result.quality == 'reject' %}
+          <p>Die Audioqualität war nicht ausreichend.</p>
+          {% endif %}
+        </div>
+
+      {% else %}
+        <!-- ── Normal scored day (4+) ── -->
+        <span class="score-label">Stimmungs-Score</span>
+        <span class="score-value {{ result.get_score_css_class() }}">{{ result.score | int }}</span>
+        <span class="score-unit">von &minus;100 bis +100</span>
+        <span class="score-state-label">{{ result.get_state_label() }}</span>
+        {% if result.confidence is not none %}
+        <span class="score-confidence">Konfidenz: {{ (result.confidence * 100) | int }}&thinsp;%</span>
+        {% endif %}
+
+      {% endif %}
+
+      <!-- ── Details expander (all days) ── -->
       <div class="details-expander">
-        <div onclick="toggleDetails();">
-          <svg id="details-flip" class="flip" xmlns="http://www.w3.org/2000/svg" width="10" height="10" viewBox="0 0 24 24"><path d="M24 22h-24l12-20z"/></svg>
+        <div class="details-toggle" onclick="toggleDetails();" role="button" tabindex="0"
+             aria-expanded="false" aria-controls="details-content">
+          <svg id="details-flip" class="flip" xmlns="http://www.w3.org/2000/svg"
+               width="10" height="10" viewBox="0 0 24 24" aria-hidden="true">
+            <path d="M24 22h-24l12-20z"/>
+          </svg>
           Details
         </div>
-        <div id="details-content" style="visibility: hidden;display: none;">
-          <b>Veränderungen zum Vergleichszeitraum</b>
+        <div id="details-content" class="details-content details-content--hidden">
+          <b>Akustische Merkmale</b>
           <table>
             <tbody>
               <tr>
                 <td class="details-label">Sprechtempo:</td>
-                <td class="details-value">{{ result.speech_rate }}</td>
+                <td class="details-value">{{ '%.3f' | format(result.speech_rate) if result.speech_rate is not none else '–' }}</td>
               </tr>
               <tr>
-                <td class="details-label">Pausenanzahl:</td>
-                <td class="details-value">{{ result.pause_rate }}</td>
+                <td class="details-label">Pausenanteil:</td>
+                <td class="details-value">{{ '%.3f' | format(result.pause_ratio) if result.pause_ratio is not none else '–' }}</td>
               </tr>
               <tr>
                 <td class="details-label">Pausendauer:</td>
-                <td class="details-value">{{ result.mean_pause_duration }}</td>
+                <td class="details-value">{{ '%.3f' | format(result.pause_mean_dur) if result.pause_mean_dur is not none else '–' }}</td>
               </tr>
               <tr>
                 <td class="details-label">Sprachenergie:</td>
-                <td class="details-value">{{ result.rms_energy }}</td>
+                <td class="details-value">{{ '%.4f' | format(result.rms_energy) if result.rms_energy is not none else '–' }}</td>
               </tr>
               <tr>
                 <td class="details-label">Jitter:</td>
-                <td class="details-value">{{ result.jitter }}</td>
+                <td class="details-value">{{ '%.4f' | format(result.jitter_local) if result.jitter_local is not none else '–' }}</td>
               </tr>
               <tr>
                 <td class="details-label">Shimmer:</td>
-                <td class="details-value">{{ result.shimmer }}</td>
+                <td class="details-value">{{ '%.4f' | format(result.shimmer_local) if result.shimmer_local is not none else '–' }}</td>
               </tr>
               <tr>
-                <td class="details-label">Niederfrequenzvarianz:</td>
-                <td class="details-value">{{ result.f0_range}}</td>
+                <td class="details-label">HNR:</td>
+                <td class="details-value">{{ '%.3f' | format(result.hnr) if result.hnr is not none else '–' }}</td>
               </tr>
               <tr>
-                <td class="details-label">Niederfrequenzen:</td>
-                <td class="details-value">{{ result.f0_mean }}</td>
+                <td class="details-label">Grundfrequenz (Mittel):</td>
+                <td class="details-value">{{ '%.1f' | format(result.f0_mean) if result.f0_mean is not none else '–' }}</td>
               </tr>
               <tr>
-                <td class="details-label">Mittelfrequenzen:</td>
-                <td class="details-value">{{ result.f1_mean }}</td>
+                <td class="details-label">Grundfrequenz (Varianz):</td>
+                <td class="details-value">{{ '%.1f' | format(result.f0_range) if result.f0_range is not none else '–' }}</td>
               </tr>
               <tr>
-                <td class="details-label">Hochfrequenzen:</td>
-                <td class="details-value">{{ result.f2_mean }}</td>
+                <td class="details-label">Grundfrequenz (Std.):</td>
+                <td class="details-value">{{ '%.2f' | format(result.f0_std) if result.f0_std is not none else '–' }}</td>
               </tr>
               <tr>
-                <td class="details-label">Frequenzkoeffizienten:</td>
-                <td class="details-value">{{ result.mfcc_var }}</td>
+                <td class="details-label">Spektralzentroid:</td>
+                <td class="details-value">{{ '%.1f' | format(result.spectral_centroid) if result.spectral_centroid is not none else '–' }}</td>
               </tr>
               <tr>
-                <td class="details-label">Harmonics to Noise Ratio:</td>
-                <td class="details-value">{{ result.hnr}}</td>
+                <td class="details-label">MFCC 1–4:</td>
+                <td class="details-value">
+                  {{ '%.2f' | format(result.mfcc_1) if result.mfcc_1 is not none else '–' }},
+                  {{ '%.2f' | format(result.mfcc_2) if result.mfcc_2 is not none else '–' }},
+                  {{ '%.2f' | format(result.mfcc_3) if result.mfcc_3 is not none else '–' }},
+                  {{ '%.2f' | format(result.mfcc_4) if result.mfcc_4 is not none else '–' }}
+                </td>
+              </tr>
+              <tr>
+                <td class="details-label">Audioqualität:</td>
+                <td class="details-value">{{ result.get_quality_label() }}</td>
               </tr>
             </tbody>
           </table>
         </div>
       </div>
-    </div>
-  </div>
+
+    </div><!-- /.score-card -->
+  </div><!-- /.result-page -->
 </div>
+
 <script src="{{ url_for('static', filename='js/result.js') }}"></script>
 </body>
 </html>
