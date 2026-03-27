@@ -312,6 +312,7 @@ def analyze_single_day(
         M_t=man_smooth,
         A_t=A_t,
         quality_reliability=reliability,
+        confidence=confidence,
     )
 
     _prog(100, 'Analyse abgeschlossen.')

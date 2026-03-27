@@ -4,7 +4,18 @@
       "Bash(mkdir -p \"c:/Users/winte/source/SystemOfAPawn-CodeCanary/src/vocal_monitor\")",
       "Bash(mkdir -p \"c:/Users/winte/source/SystemOfAPawn-CodeCanary/tests\")",
       "Bash(mkdir -p \"c:/Users/winte/source/SystemOfAPawn-CodeCanary/configs\")",
-      "Bash(find c:/Users/User/source/SystemOfAPawn-CodeCanary/ -name patient_* -type d)"
+      "Bash(find c:/Users/User/source/SystemOfAPawn-CodeCanary/ -name patient_* -type d)",
+      "Bash(ffmpeg -version)",
+      "Bash(python -c \"import pydub; print\\(''''pydub ok''''\\)\")",
+      "Bash(pip install:*)",
+      "Bash(pip show:*)",
+      "Bash(where python:*)",
+      "Bash(pip --version)",
+      "Bash(C:Python312python.exe -m pip install pydub)",
+      "Bash(python -m pip install pydub)",
+      "Bash(python -c \"import pydub; print\\(''pydub'', pydub.__version__\\)\")",
+      "Bash(python -m pip install av)",
+      "Bash(python -c \"import av; print\\(''av'', av.__version__\\); import av; c = av.open; print\\(''av.open ok''\\)\")"
     ]
   }
 }
