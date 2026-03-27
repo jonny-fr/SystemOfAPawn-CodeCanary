@@ -32,8 +32,10 @@ EINSCHRAENKUNG 4: Jitter und Shimmer sind bei Clips < 8 Sekunden unzuverlaessig.
 """
 
 import os
+import tempfile
 from pathlib import Path
 
+import av
 import librosa
 import numpy as np
 import pandas as pd
@@ -108,15 +110,81 @@ FEATURE_WEIGHTS = {
 
 
 # ===========================================================================
-# Module 1: Audio Preprocessing  (unchanged)
+# Module 1: Audio Preprocessing
 # ===========================================================================
+
+def _to_wav_if_needed(filepath: str) -> tuple[str, bool]:
+    """
+    If the file is not a format soundfile/librosa can read natively
+    (e.g. .webm, .mp4, .ogg opus), convert it to a temporary WAV via PyAV.
+
+    Returns (path_to_use, created_tmp).
+    The caller is responsible for deleting the temp file when created_tmp=True.
+    """
+    ext = Path(filepath).suffix.lower()
+    # soundfile handles these natively without conversion
+    native = {'.wav', '.flac', '.aif', '.aiff', '.caf'}
+    if ext in native:
+        return filepath, False
+
+    # Use PyAV to decode any format → float32 PCM WAV at 16 kHz mono
+    tmp = tempfile.NamedTemporaryFile(suffix='.wav', delete=False)
+    tmp_path = tmp.name
+    tmp.close()
+
+    try:
+        with av.open(filepath) as container:
+            audio_stream = next(
+                (s for s in container.streams if s.type == 'audio'), None
+            )
+            if audio_stream is None:
+                raise ValueError(f"No audio stream found in {filepath}")
+
+            output = av.open(tmp_path, 'w', format='wav')
+            out_stream = output.add_stream('pcm_s16le', rate=16000)
+            out_stream.layout = 'mono'
+
+            resampler = av.AudioResampler(
+                format='s16',
+                layout='mono',
+                rate=16000,
+            )
+
+            for frame in container.decode(audio_stream):
+                for resampled in resampler.resample(frame):
+                    resampled.pts = None
+                    output.mux(out_stream.encode(resampled))
+
+            # Flush encoder
+            for packet in out_stream.encode(None):
+                output.mux(packet)
+
+            output.close()
+
+    except Exception:
+        try:
+            os.unlink(tmp_path)
+        except OSError:
+            pass
+        raise
+
+    return tmp_path, True
+
 
 def load_audio(filepath: str) -> tuple[np.ndarray, int]:
     """
-    Load any WAV file, convert to mono, resample to 16 000 Hz.
+    Load any audio file (WAV, WebM, MP4, OGG, …), convert to mono 16 kHz.
     Returns (signal_float32, 16000).
     """
-    signal, sr = librosa.load(filepath, sr=16000, mono=True)
+    wav_path, is_tmp = _to_wav_if_needed(filepath)
+    try:
+        signal, _ = librosa.load(wav_path, sr=16000, mono=True)
+    finally:
+        if is_tmp:
+            try:
+                os.unlink(wav_path)
+            except OSError:
+                pass
     return signal, 16000
 
 

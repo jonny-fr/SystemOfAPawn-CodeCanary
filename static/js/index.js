@@ -85,7 +85,25 @@
             try {
                 const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
                 recordedChunks = [];
-                mediaRecorder = new MediaRecorder(stream);
+
+                // Pick the best supported MIME type; server handles all via PyAV
+                const PREFERRED = [
+                    'audio/webm;codecs=opus',
+                    'audio/webm',
+                    'audio/ogg;codecs=opus',
+                    'audio/ogg',
+                    'audio/mp4',
+                    '',   // browser default
+                ];
+                const mimeType = PREFERRED.find(m => m === '' || MediaRecorder.isTypeSupported(m)) || '';
+                const ext = mimeType.includes('ogg') ? 'ogg'
+                          : mimeType.includes('mp4') ? 'mp4'
+                          : 'webm';
+
+                mediaRecorder = mimeType
+                    ? new MediaRecorder(stream, { mimeType })
+                    : new MediaRecorder(stream);
+
                 let start = 0;
 
                 mediaRecorder.onstart  = () => { start = Date.now(); };
@@ -93,12 +111,12 @@
                     if (e.data && e.data.size > 0) recordedChunks.push(e.data);
                 };
                 mediaRecorder.onstop = () => {
-                    const blob = new Blob(recordedChunks, { type: 'audio/webm' });
+                    const blob = new Blob(recordedChunks, { type: mimeType || 'audio/webm' });
                     recordedChunks = [];
                     if (Date.now() - start < 4500) {
                         showToast('Bitte mindestens 5 Sekunden an Tonmaterial bereitstellen.', true);
                     } else {
-                        sendToBackend(blob, 'aufnahme.webm');
+                        sendToBackend(blob, 'aufnahme.' + ext);
                     }
                 };
 

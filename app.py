@@ -64,7 +64,7 @@ def _run_analysis(task_id: str, audio_path: str, day_number: int):
         res = Result(None)
         res.day_number = day_number
         res.is_baseline = result_data['is_baseline']
-        res.score = result_data['score']
+        res.score = 0 if result_data['score'] == None else result_data['score']
         res.state = result_data['state']
         res.confidence = result_data['confidence']
         res.dep_score = result_data['dep_score']

@@ -1,9 +1,4 @@
 /classifier/__pycache__/
 /__pycache__/
 /results.db
-/classifier/results/all_patients_results.csv
-/classifier/results/Patient_A_results.csv
-/classifier/results/Patient_B_results.csv
-/classifier/results/Patient_C_results.csv
-/classifier/results/Patient_D_results.csv
-/classifier/results/Patient_E_results.csv
+*.pyc

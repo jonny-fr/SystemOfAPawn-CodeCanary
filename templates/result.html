@@ -58,86 +58,8 @@
         {% if result.confidence is not none %}
         <span class="score-confidence">Konfidenz: {{ (result.confidence * 100) | int }}&thinsp;%</span>
         {% endif %}
-
       {% endif %}
 
-      <!-- ── Details expander (all days) ── -->
-      <div class="details-expander">
-        <div class="details-toggle" onclick="toggleDetails();" role="button" tabindex="0"
-             aria-expanded="false" aria-controls="details-content">
-          <svg id="details-flip" class="flip" xmlns="http://www.w3.org/2000/svg"
-               width="10" height="10" viewBox="0 0 24 24" aria-hidden="true">
-            <path d="M24 22h-24l12-20z"/>
-          </svg>
-          Details
-        </div>
-        <div id="details-content" class="details-content details-content--hidden">
-          <b>Akustische Merkmale</b>
-          <table>
-            <tbody>
-              <tr>
-                <td class="details-label">Sprechtempo:</td>
-                <td class="details-value">{{ '%.3f' | format(result.speech_rate) if result.speech_rate is not none else '–' }}</td>
-              </tr>
-              <tr>
-                <td class="details-label">Pausenanteil:</td>
-                <td class="details-value">{{ '%.3f' | format(result.pause_ratio) if result.pause_ratio is not none else '–' }}</td>
-              </tr>
-              <tr>
-                <td class="details-label">Pausendauer:</td>
-                <td class="details-value">{{ '%.3f' | format(result.pause_mean_dur) if result.pause_mean_dur is not none else '–' }}</td>
-              </tr>
-              <tr>
-                <td class="details-label">Sprachenergie:</td>
-                <td class="details-value">{{ '%.4f' | format(result.rms_energy) if result.rms_energy is not none else '–' }}</td>
-              </tr>
-              <tr>
-                <td class="details-label">Jitter:</td>
-                <td class="details-value">{{ '%.4f' | format(result.jitter_local) if result.jitter_local is not none else '–' }}</td>
-              </tr>
-              <tr>
-                <td class="details-label">Shimmer:</td>
-                <td class="details-value">{{ '%.4f' | format(result.shimmer_local) if result.shimmer_local is not none else '–' }}</td>
-              </tr>
-              <tr>
-                <td class="details-label">HNR:</td>
-                <td class="details-value">{{ '%.3f' | format(result.hnr) if result.hnr is not none else '–' }}</td>
-              </tr>
-              <tr>
-                <td class="details-label">Grundfrequenz (Mittel):</td>
-                <td class="details-value">{{ '%.1f' | format(result.f0_mean) if result.f0_mean is not none else '–' }}</td>
-              </tr>
-              <tr>
-                <td class="details-label">Grundfrequenz (Varianz):</td>
-                <td class="details-value">{{ '%.1f' | format(result.f0_range) if result.f0_range is not none else '–' }}</td>
-              </tr>
-              <tr>
-                <td class="details-label">Grundfrequenz (Std.):</td>
-                <td class="details-value">{{ '%.2f' | format(result.f0_std) if result.f0_std is not none else '–' }}</td>
-              </tr>
-              <tr>
-                <td class="details-label">Spektralzentroid:</td>
-                <td class="details-value">{{ '%.1f' | format(result.spectral_centroid) if result.spectral_centroid is not none else '–' }}</td>
-              </tr>
-              <tr>
-                <td class="details-label">MFCC 1–4:</td>
-                <td class="details-value">
-                  {{ '%.2f' | format(result.mfcc_1) if result.mfcc_1 is not none else '–' }},
-                  {{ '%.2f' | format(result.mfcc_2) if result.mfcc_2 is not none else '–' }},
-                  {{ '%.2f' | format(result.mfcc_3) if result.mfcc_3 is not none else '–' }},
-                  {{ '%.2f' | format(result.mfcc_4) if result.mfcc_4 is not none else '–' }}
-                </td>
-              </tr>
-              <tr>
-                <td class="details-label">Audioqualität:</td>
-                <td class="details-value">{{ result.get_quality_label() }}</td>
-              </tr>
-            </tbody>
-          </table>
-        </div>
-      <span class="score-label">Dein Score</span>
-      <span class="score-value {{ result.get_score_css_class() }}">{{ result.score }}</span>
-      <span class="score-unit">von 100 Punkten</span>
       <div id="timelineParent">
         <span id="timelineData" style="visibility:hidden;display:none;" currentIndex="{{ current }}">
           {{ timeline }}
