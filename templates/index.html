@@ -28,25 +28,6 @@
   <!-- ── Centre: day info + soundwave / progress ── -->
   <main class="center" aria-label="Hauptbereich">
 
-    <!-- Day info card (hidden during analysis) -->
-    <div class="day-info-card" id="day-info-card">
-      <span class="day-number-label">Tag {{ day_number }}</span>
-
-      {% if day_number <= 3 %}
-        <span class="baseline-hint">Baseline-Phase ({{ day_number }}/3)</span>
-        <span class="baseline-sub">Noch {{ 4 - day_number }} Tag{{ '' if (4 - day_number) == 1 else 'e' }} bis zur ersten Analyse</span>
-      {% elif last_result and last_result.score is not none %}
-        <div class="last-score-mini">
-          <span class="last-score-label">Letzter Score (Tag {{ last_result.day_number }})</span>
-          <span class="last-score-value {{ last_result.get_score_css_class() }}">
-            {{ last_result.score | int }}
-          </span>
-          <span class="last-score-state">{{ last_result.get_state_label() }}</span>
-        </div>
-      {% else %}
-        <span class="baseline-hint">Lade eine Aufnahme für Tag {{ day_number }} hoch</span>
-      {% endif %}
-    </div>
 
     <!-- Soundwave (hidden during analysis) -->
     <div class="soundwave idle" id="soundwave" aria-hidden="true">
@@ -68,6 +49,28 @@
       </div>
       <span class="progress-status" id="progress-status">Wird vorbereitet…</span>
     </div>
+
+
+      <!-- Day info card (hidden during analysis) -->
+    <div class="day-info-card" id="day-info-card">
+      <span class="day-number-label">Tag {{ day_number }}</span>
+
+      {% if day_number <= 3 %}
+        <span class="baseline-hint">Baseline-Phase ({{ day_number }}/3)</span>
+        <span class="baseline-sub">Noch {{ 4 - day_number }} Tag{{ '' if (4 - day_number) == 1 else 'e' }} bis zur ersten Analyse</span>
+      {% elif last_result and last_result.score is not none %}
+        <div class="last-score-mini">
+          <span class="last-score-label">Letzter Score (Tag {{ last_result.day_number }})</span>
+          <span class="last-score-value {{ last_result.get_score_css_class() }}">
+            {{ last_result.score | int }}
+          </span>
+          <span class="last-score-state">{{ last_result.get_state_label() }}</span>
+        </div>
+      {% else %}
+        <span class="baseline-hint">Lade eine Aufnahme für Tag {{ day_number }} hoch</span>
+      {% endif %}
+    </div>
+
 
   </main>
 
