@@ -18,6 +18,7 @@ from database import (
     get_results,
     init_db,
     save_result,
+    get_adjacent_scores,
 )
 from result import Result
 
@@ -203,7 +204,14 @@ def result(result_id):
     res = get_result(result_id)
     if res is None:
         abort(404)
-    return render_template('result.html', result=res)
+    timeline = get_adjacent_scores(result_id, 7)
+    currentIndex = -1
+    i = 0
+    for x in timeline:
+        if x[1]:
+            currentIndex = i
+        i += 1
+    return render_template('result.html', result=res, timeline=[x[0] for x in timeline], current=currentIndex)
 
 
 if __name__ == '__main__':

@@ -135,12 +135,20 @@
             </tbody>
           </table>
         </div>
+      <span class="score-label">Dein Score</span>
+      <span class="score-value {{ result.get_score_css_class() }}">{{ result.score }}</span>
+      <span class="score-unit">von 100 Punkten</span>
+      <div id="timelineParent">
+        <span id="timelineData" style="visibility:hidden;display:none;" currentIndex="{{ current }}">
+          {{ timeline }}
+        </span>
+        <canvas id="timelineChart" width="400" height="400"></canvas>
       </div>
 
     </div><!-- /.score-card -->
   </div><!-- /.result-page -->
 </div>
-
+<script src="{{ url_for('static', filename='js/chart.min.js') }}"></script>
 <script src="{{ url_for('static', filename='js/result.js') }}"></script>
 </body>
 </html>
