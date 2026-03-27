@@ -3,7 +3,8 @@
     "allow": [
       "Bash(mkdir -p \"c:/Users/winte/source/SystemOfAPawn-CodeCanary/src/vocal_monitor\")",
       "Bash(mkdir -p \"c:/Users/winte/source/SystemOfAPawn-CodeCanary/tests\")",
-      "Bash(mkdir -p \"c:/Users/winte/source/SystemOfAPawn-CodeCanary/configs\")"
+      "Bash(mkdir -p \"c:/Users/winte/source/SystemOfAPawn-CodeCanary/configs\")",
+      "Bash(find c:/Users/User/source/SystemOfAPawn-CodeCanary/ -name patient_* -type d)"
     ]
   }
 }
