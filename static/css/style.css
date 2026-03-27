@@ -564,6 +564,12 @@ html, body {
   color: var(--muted);
 }
 
+.score-trend {
+  font-size: 0.9rem;
+  color: var(--muted);
+  font-weight: 500;
+}
+
 /* ── Baseline message on result page ─────────── */
 .baseline-message {
   font-size: 0.9rem;

@@ -57,6 +57,15 @@
           {% else %}
           <span class="history-item-score">
             <b class="{{ row.get_score_css_class() }}">{{ row.score | int }}</b>
+            {% set prev = prev_scores.get(row.id) %}
+            {% if prev is not none %}
+              {% set delta = (row.score - prev) | int %}
+              {% if delta > 0 %}
+                <span class="score-trend">&#9650; +{{ delta }}</span>
+              {% elif delta < 0 %}
+                <span class="score-trend">&#9660; {{ delta }}</span>
+              {% endif %}
+            {% endif %}
             <small>/ ±100</small>
           </span>
           {% endif %}

@@ -53,6 +53,14 @@
         <!-- ── Normal scored day (4+) ── -->
         <span class="score-label">Stimmungs-Score</span>
         <span class="score-value {{ result.get_score_css_class() }}">{{ result.score | int }}</span>
+        {% if prev_score is not none %}
+          {% set delta = (result.score - prev_score) | int %}
+          {% if delta > 0 %}
+            <span class="score-trend">&#9650; +{{ delta }}</span>
+          {% elif delta < 0 %}
+            <span class="score-trend">&#9660; {{ delta }}</span>
+          {% endif %}
+        {% endif %}
         <span class="score-unit">von &minus;100 bis +100</span>
         <span class="score-state-label">{{ result.get_state_label() }}</span>
         {% if result.confidence is not none %}

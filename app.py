@@ -20,6 +20,8 @@ from database import (
     save_result,
     get_adjacent_scores,
     delete_history,
+    get_score_before_day,
+    get_all_score_deltas,
 )
 from result import Result
 
@@ -131,7 +133,9 @@ def clear_history():
 
 @app.route('/history')
 def history():
-    return render_template('history.html', results=get_results())
+    results = get_results()
+    prev_scores = get_all_score_deltas()
+    return render_template('history.html', results=results, prev_scores=prev_scores)
 
 
 @app.route('/analyze', methods=['POST'])
@@ -217,7 +221,8 @@ def result(result_id):
         if x[1]:
             currentIndex = i
         i += 1
-    return render_template('result.html', result=res, timeline=[x[0] for x in timeline], current=currentIndex)
+    prev_score = get_score_before_day(res.day_number)
+    return render_template('result.html', result=res, timeline=[x[0] for x in timeline], current=currentIndex, prev_score=prev_score)
 
 
 if __name__ == '__main__':

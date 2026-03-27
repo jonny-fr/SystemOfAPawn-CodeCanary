@@ -171,6 +171,30 @@ def get_result(result_id: int):
     return Result(row)
 
 
+def get_score_before_day(day_number: int):
+    """Returns the score of the most recent non-baseline scored result before day_number, or None."""
+    with get_db() as conn:
+        row = conn.execute(
+            'SELECT score FROM results WHERE score IS NOT NULL AND is_baseline = 0 AND day_number < ? ORDER BY day_number DESC LIMIT 1',
+            (day_number,)
+        ).fetchone()
+    return row['score'] if row else None
+
+
+def get_all_score_deltas() -> dict:
+    """Returns {result_id: prev_score} for all non-baseline scored results."""
+    with get_db() as conn:
+        rows = conn.execute(
+            'SELECT id, score FROM results WHERE score IS NOT NULL AND is_baseline = 0 ORDER BY day_number ASC'
+        ).fetchall()
+    deltas = {}
+    prev_score = None
+    for row in rows:
+        deltas[row['id']] = prev_score
+        prev_score = row['score']
+    return deltas
+
+
 def get_adjacent_scores(result_id: int, range: int) -> list[int]:
     with get_db() as conn:
         # TODO: more robust implementation that doesn't rely on consecutive IDs
