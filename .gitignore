@@ -1,3 +1,4 @@
 /classifier/__pycache__/
 /__pycache__/
 /results.db
+*.pyc

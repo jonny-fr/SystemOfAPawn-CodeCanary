@@ -20,7 +20,7 @@ document.onreadystatechange = function() {
   }
 
   let chart = document.getElementById('timelineChart');
-  chart.height = window.innerWidth / 200 * (Math.abs(min) + max); 
+  chart.height = Math.max(200, window.innerWidth / 200 * (Math.abs(min) + max));
   chart.width = window.innerWidth - 100;
 
   new Chart(chart, {
