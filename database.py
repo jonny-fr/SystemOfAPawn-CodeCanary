@@ -168,5 +168,6 @@ def get_result(result_id: int):
 def get_adjacent_scores(result_id: int, range: int) -> list[int]:
     with get_db() as conn:
         # TODO: more robust implementation that doesn't rely on consecutive IDs
-        rows = conn.execute('SELECT id, score FROM results WHERE id >= ? AND id <= ? ORDER BY id ASC').fetchall()
+        rows = conn.execute('SELECT id, score FROM results WHERE id >= ? AND id <= ? ORDER BY id ASC',
+                            (result_id - range, result_id + range)).fetchall()
         return [(r['score'], r['id'] == result_id) for r in rows]
