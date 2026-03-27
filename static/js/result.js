@@ -34,7 +34,14 @@ document.onreadystatechange = function() {
         borderColor: '#4f48c4',
         backgroundColor: '#4f48c4',
         tension: 0
-      }]
+      }],
+    },
+    options: {
+      plugins: {
+        legend: {
+          display: false,
+        }
+      }
     }
   });
 }
