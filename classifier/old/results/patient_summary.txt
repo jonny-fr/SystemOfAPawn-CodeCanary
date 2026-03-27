@@ -1,5 +1,0 @@
-Patient_A: baseline_ready=True; quality(valid/degraded/reject)=14/0/0; status(stable/dep/mania/unclear/abstain_q/abstain_b)=3/9/0/2/0/0; first_dep=4; first_mania=None; first_unclear=6
-Patient_B: baseline_ready=True; quality(valid/degraded/reject)=14/0/0; status(stable/dep/mania/unclear/abstain_q/abstain_b)=3/0/3/8/0/0; first_dep=None; first_mania=7; first_unclear=4
-Patient_C: baseline_ready=True; quality(valid/degraded/reject)=10/4/0; status(stable/dep/mania/unclear/abstain_q/abstain_b)=14/0/0/0/0/0; first_dep=None; first_mania=None; first_unclear=None
-Patient_D: baseline_ready=True; quality(valid/degraded/reject)=14/0/0; status(stable/dep/mania/unclear/abstain_q/abstain_b)=14/0/0/0/0/0; first_dep=None; first_mania=None; first_unclear=None
-Patient_E: baseline_ready=True; quality(valid/degraded/reject)=14/0/0; status(stable/dep/mania/unclear/abstain_q/abstain_b)=14/0/0/0/0/0; first_dep=None; first_mania=None; first_unclear=None

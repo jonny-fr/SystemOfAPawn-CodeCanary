@@ -600,3 +600,18 @@ html, body {
   font-weight: 700;
   color: var(--muted);
 }
+
+#clearButton {
+  position: absolute;
+  right: 15px;
+  top: 15px;
+  color: white;
+  background-color: #c50000;
+  border-radius: 10px;
+  border-width: 0;
+  padding-top: 5px;
+  padding-bottom: 5px;
+  padding-right: 10px;
+  padding-left: 10px;
+  font-weight: bold;
+}

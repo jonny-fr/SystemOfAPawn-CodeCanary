@@ -19,6 +19,7 @@ from database import (
     init_db,
     save_result,
     get_adjacent_scores,
+    delete_history,
 )
 from result import Result
 
@@ -122,6 +123,11 @@ def index():
     last_result = get_last_scored_result()
     return render_template('index.html', day_number=day_number, last_result=last_result)
 
+
+@app.route('/history/clear')
+def clear_history():
+    delete_history()
+    return 1
 
 @app.route('/history')
 def history():

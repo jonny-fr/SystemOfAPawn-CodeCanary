@@ -54,6 +54,12 @@ def init_db():
         )
         conn.commit()
 
+def delete_history():
+    with get_db() as conn:
+        print('ipojpwerjipoij')
+        cursor = conn.cursor()
+        cursor.execute('DELETE FROM results')
+        conn.commit()
 
 def get_next_day_number() -> int:
     """Returns 1-based day number for the next recording."""

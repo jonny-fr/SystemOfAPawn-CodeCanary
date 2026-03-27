@@ -22,6 +22,21 @@
       Zurück
     </a>
 
+    <script>
+      function clearHistory() {
+        if(confirm('Datenbank wirklich zurücksetzen?')) {
+          let xhr = new XMLHttpRequest();
+          xhr.open('GET', window.location.href.trimEnd('/') + '/clear');
+          xhr.onreadystatechange = function() {
+            if(this.readyState == 4) {
+              window.location.href = window.location.href.trimEnd('/').substring(0, window.location.href.lastIndexOf('/'));
+            }
+          }
+          xhr.send();
+        }
+      }
+    </script>
+    <button id="clearButton" onclick="clearHistory();">Zurücksetzen</button>
     <h1>Verlauf</h1>
 
     {% if results %}
